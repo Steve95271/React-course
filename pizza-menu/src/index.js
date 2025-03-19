@@ -67,48 +67,68 @@ function Header() {
 }
 
 function Menu() {
+  const pizzas = pizzaData;
+  const pizzaNum = pizzas.length;
+  // const pizzaNum = [];
+
   return (
     <main className="menu">
       <h2>Menu</h2>
-      <div className="pizzas">
-        <Pizza
-          name="Focaccia"
-          ingredients="Bread with italian olive oil and rosemary"
-          picture="pizzas/focaccia.jpg"
-          alt="Focaccia pizza puctire"
-          price={6}
-        />
-        <Pizza
-          name="Pizza Margherita"
-          ingredients="Tomato and mozarella"
-          picture="pizzas/margherita.jpg"
-          alt="Pizza Margherita"
-          price={12}
-        />
-        <Pizza
-          name="Pizza Spinaci"
-          ingredients="Tomato, mozarella, spinach, and ricotta cheese"
-          picture="pizzas/spinaci.jpg"
-          alt="Pizza Spinaci"
-          price={9}
-        />
-      </div>
+      {pizzaNum > 0 ? (
+        <ul className="pizzas">
+          {pizzaData.map((pizza) => (
+            <Pizza pizzaObj={pizza} key={pizza.name} />
+          ))}
+        </ul>
+      ) : (
+        <p>
+          Sorry, we're still preparing the pizza menu. Please comback next time
+          😃
+        </p>
+      )}
     </main>
   );
+
+  // if (pizzaNum > 0) {
+  //   return (
+  //     <main className="menu">
+  //       <h2>Menu</h2>
+  //       <ul className="pizzas">
+  //         {pizzaData.map((pizza) => (
+  //           <Pizza pizzaObj={pizza} key={pizza.name} />
+  //         ))}
+  //       </ul>
+  //     </main>
+  //   );
+  // } else {
+  //   return (
+  //     <p>
+  //       Sorry, we're still preparing the pizza menu. Please comback next time 😃
+  //     </p>
+  //   );
+  // }
 }
 
 function Pizza(props) {
   console.log(props);
 
+  if (props.pizzaObj.soldOut) {
+    return (
+      <li className="pizza">
+        <p>We are never gone for long</p>
+      </li>
+    );
+  }
+
   return (
-    <div className="pizza">
-      <img src={props.picture} alt={props.alt}></img>
+    <li className="pizza">
+      <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name}></img>
       <div>
-        <h3>{props.name}</h3>
-        <p>{props.ingredients}</p>
-        <span>{props.price + 5} $</span>
+        <h3>{props.pizzaObj.name}</h3>
+        <p>{props.pizzaObj.ingredients}</p>
+        <span>{props.pizzaObj.price} $</span>
       </div>
-    </div>
+    </li>
   );
 }
 
