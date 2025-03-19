@@ -70,20 +70,29 @@ function Menu() {
   return (
     <main className="menu">
       <h2>Menu</h2>
-      <Pizza
-        name="Focaccia"
-        ingredients="Bread with italian olive oil and rosemary"
-        picture="pizzas/focaccia.jpg"
-        alt="Focaccia pizza puctire"
-        price={6}
-      />
-      <Pizza
-        name="Pizza Margherita"
-        ingredients="Tomato and mozarella"
-        picture="pizzas/margherita.jpg"
-        alt="Pizza Margherita"
-        price={12}
-      />
+      <div className="pizzas">
+        <Pizza
+          name="Focaccia"
+          ingredients="Bread with italian olive oil and rosemary"
+          picture="pizzas/focaccia.jpg"
+          alt="Focaccia pizza puctire"
+          price={6}
+        />
+        <Pizza
+          name="Pizza Margherita"
+          ingredients="Tomato and mozarella"
+          picture="pizzas/margherita.jpg"
+          alt="Pizza Margherita"
+          price={12}
+        />
+        <Pizza
+          name="Pizza Spinaci"
+          ingredients="Tomato, mozarella, spinach, and ricotta cheese"
+          picture="pizzas/spinaci.jpg"
+          alt="Pizza Spinaci"
+          price={9}
+        />
+      </div>
     </main>
   );
 }
@@ -97,7 +106,7 @@ function Pizza(props) {
       <div>
         <h3>{props.name}</h3>
         <p>{props.ingredients}</p>
-        <span>{props.price + 3} $</span>
+        <span>{props.price + 5} $</span>
       </div>
     </div>
   );
