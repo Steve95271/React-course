@@ -144,14 +144,19 @@ function getBook(id) {
 }
 
 // Destructuring
+const books = getBooks();
+console.log(books);
+const sortedByPages = books.slice().sort((a, b) => a.pages - b.pages);
+console.log(sortedByPages);
+
 const book = getBook(2);
-book;
+console.log(book);
 // const title = book.title;
 // const author = book.author;
 
 const { title, author, genres } = book;
 
-// "..." is rest operator
+// "..." is splead operator
 const [primaryGenre, secondaryGenre, ...otherGenre] = genres;
 
 console.log(primaryGenre, secondaryGenre, otherGenre);
@@ -171,3 +176,40 @@ const updatedBook = {
 };
 
 console.log(updatedBook);
+
+// Arrow function
+const getYear = (str) => str.split("-")[0];
+
+console.log(getYear(book.publicationDate));
+
+// add book object to array
+const cleanCode = {
+  id: 7,
+  title: "Clean Code",
+  author: "Steve Feng",
+};
+
+const booksAfteradd = [...books, cleanCode];
+console.log(booksAfteradd);
+
+const booksAfterDelete = booksAfteradd.filter((book) => book.id !== 3);
+console.log(booksAfterDelete);
+
+const booksAfterUpdate = booksAfterDelete.map((book) =>
+  book.id === 1 ? {} : book
+);
+console.log(booksAfterUpdate);
+
+fetch("https://jsonplaceholder.typicode.com/todos/")
+  .then((response) => {
+    console.log(response);
+    return response.json();
+  })
+  .then((data) => {
+    console.log(data);
+  })
+  .then(() => {
+    console.log("Hello");
+  });
+
+console.log("Baking bad");
