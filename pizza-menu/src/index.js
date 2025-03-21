@@ -75,17 +75,19 @@ function Menu() {
     <main className="menu">
       <h2>Menu</h2>
 
-      <p>
-        Authentic Italian cuision. 6 creative dishes to choose from. All from
-        our stone oven, all organic, all delicious.
-      </p>
-
       {pizzaNum > 0 ? (
-        <ul className="pizzas">
-          {pizzaData.map((pizza) => (
-            <Pizza pizzaObj={pizza} key={pizza.name} />
-          ))}
-        </ul>
+        // React fragment. Using for retuen multiple tag.
+        <>
+          <p>
+            Authentic Italian cuision. 6 creative dishes to choose from. All
+            from our stone oven, all organic, all delicious.
+          </p>
+          <ul className="pizzas">
+            {pizzaData.map((pizza) => (
+              <Pizza pizzaObj={pizza} key={pizza.name} />
+            ))}
+          </ul>
+        </>
       ) : (
         <p>
           Sorry, we're still preparing the pizza menu. Please comback next time
