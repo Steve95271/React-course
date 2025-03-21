@@ -74,6 +74,12 @@ function Menu() {
   return (
     <main className="menu">
       <h2>Menu</h2>
+
+      <p>
+        Authentic Italian cuision. 6 creative dishes to choose from. All from
+        our stone oven, all organic, all delicious.
+      </p>
+
       {pizzaNum > 0 ? (
         <ul className="pizzas">
           {pizzaData.map((pizza) => (
@@ -109,10 +115,8 @@ function Menu() {
   // }
 }
 
-function Pizza(props) {
-  console.log(props);
-
-  if (props.pizzaObj.soldOut) {
+function Pizza({ pizzaObj }) {
+  if (pizzaObj.soldOut) {
     return (
       <li className="pizza">
         <p>We are never gone for long</p>
@@ -122,11 +126,11 @@ function Pizza(props) {
 
   return (
     <li className="pizza">
-      <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name}></img>
+      <img src={pizzaObj.photoName} alt={pizzaObj.name}></img>
       <div>
-        <h3>{props.pizzaObj.name}</h3>
-        <p>{props.pizzaObj.ingredients}</p>
-        <span>{props.pizzaObj.price} $</span>
+        <h3>{pizzaObj.name}</h3>
+        <p>{pizzaObj.ingredients}</p>
+        <span>{pizzaObj.price} $</span>
       </div>
     </li>
   );
