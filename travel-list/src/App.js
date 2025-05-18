@@ -1,26 +1,46 @@
 import { useState } from "react";
 
-const initialItems = [
-  { id: 1, description: "Passports", quantity: 2, packed: false },
-  { id: 2, description: "Socks", quantity: 12, packed: false },
-];
+// const initialItems = [
+//   { id: 1, description: "Passports", quantity: 2, packed: false },
+//   { id: 2, description: "Socks", quantity: 12, packed: false },
+// ];
 
 export default function App() {
-  const [item, setItem] = useState(initialItems);
+  const [item, setItem] = useState([]);
 
   function handleAddItem(newItem) {
     setItem((itemList) => [...itemList, newItem]);
   }
 
+  /**
+   * Remove item according to the id
+   * @param itemId item id
+   */
   function handleDeleteItem(itemId) {
     setItem((itemList) => itemList.filter((item) => item.id !== itemId));
+  }
+
+  /**
+   * Check item according id
+   * @param itemId item id
+   */
+  function handleCheckItem(itemId) {
+    setItem((itemList) =>
+      itemList.map((item) =>
+        item.id === itemId ? { ...item, packed: !item.packed } : item
+      )
+    );
   }
 
   return (
     <div className="app">
       <Logo />
       <Form onAddItem={handleAddItem} />
-      <PackingList itemList={item} onDeleteItem={handleDeleteItem} />
+      <PackingList
+        itemList={item}
+        onDeleteItem={handleDeleteItem}
+        onCheckItem={handleCheckItem}
+      />
       <Status />
     </div>
   );
@@ -37,7 +57,7 @@ function Form({ onAddItem }) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const newItem = { quantity, description, packed: false };
+    const newItem = { id: Date.now(), quantity, description, packed: false };
 
     onAddItem(newItem);
   }
@@ -70,21 +90,30 @@ function Form({ onAddItem }) {
   );
 }
 
-function PackingList({ itemList, onDeleteItem }) {
+function PackingList({ itemList, onDeleteItem, onCheckItem }) {
   return (
     <div className="list">
       <ul>
         {itemList.map((item) => (
-          <Item item={item} onDeleteItem={onDeleteItem} />
+          <Item
+            item={item}
+            onDeleteItem={onDeleteItem}
+            onCheckItem={onCheckItem}
+          />
         ))}
       </ul>
     </div>
   );
 }
 
-function Item({ item, onDeleteItem }) {
+function Item({ item, onDeleteItem, onCheckItem }) {
   return (
     <li>
+      <input
+        type="checkbox"
+        value={item.packed}
+        onClick={() => onCheckItem(item.id)}
+      />
       <span style={item.packed ? { textDecoration: "line-through" } : {}}>
         {item.quantity} {item.description}
       </span>
