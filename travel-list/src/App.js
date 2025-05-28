@@ -1,12 +1,8 @@
 import { useState } from "react";
 
-// const initialItems = [
-//   { id: 1, description: "Passports", quantity: 2, packed: false },
-//   { id: 2, description: "Socks", quantity: 12, packed: false },
-// ];
-
 export default function App() {
   const [item, setItem] = useState([]);
+  const items = item;
 
   function handleAddItem(newItem) {
     setItem((itemList) => [...itemList, newItem]);
@@ -32,6 +28,10 @@ export default function App() {
     );
   }
 
+  function handleClearItem() {
+    setItem([]);
+  }
+
   return (
     <div className="app">
       <Logo />
@@ -40,8 +40,9 @@ export default function App() {
         itemList={item}
         onDeleteItem={handleDeleteItem}
         onCheckItem={handleCheckItem}
+        onClearItem={handleClearItem}
       />
-      <Status />
+      <Status items={items} />
     </div>
   );
 }
@@ -57,7 +58,12 @@ function Form({ onAddItem }) {
   function handleSubmit(e) {
     e.preventDefault();
 
+    if (!description) return;
+
     const newItem = { id: Date.now(), quantity, description, packed: false };
+
+    setDescription("");
+    setQuantity(1);
 
     onAddItem(newItem);
   }
@@ -90,18 +96,49 @@ function Form({ onAddItem }) {
   );
 }
 
-function PackingList({ itemList, onDeleteItem, onCheckItem }) {
+function PackingList({ itemList, onDeleteItem, onCheckItem, onClearItem }) {
+  const [sortBy, setSortBy] = useState("input");
+
+  let sortedItems;
+
+  if (sortBy === "input") {
+    sortedItems = itemList;
+  }
+
+  if (sortBy === "description") {
+    sortedItems = itemList
+      .slice()
+      .sort((a, b) => a.description.localeCompare(b.description));
+  }
+
+  if (sortBy === "packed") {
+    sortedItems = itemList
+      .slice()
+      .sort((a, b) => Number(a.packed) - Number(b.packed));
+  }
+
   return (
     <div className="list">
       <ul>
-        {itemList.map((item) => (
+        {sortedItems.map((item) => (
           <Item
             item={item}
             onDeleteItem={onDeleteItem}
             onCheckItem={onCheckItem}
+            key={item.id}
           />
         ))}
       </ul>
+
+      <div className="actions">
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value="input">SORT BY INPUT ORDER</option>
+          <option value="description">SORT BY DESCRIPTION</option>
+          <option value="packed">SORT BY PACKED STATUS</option>
+        </select>
+      </div>
+
+      <button onClick={() => onClearItem()}>CLEAR LIST</button>
     </div>
   );
 }
@@ -122,10 +159,17 @@ function Item({ item, onDeleteItem, onCheckItem }) {
   );
 }
 
-function Status() {
+function Status({ items }) {
+  const numberOfItems = items.length;
+  const packedItems = items.filter((item) => item.packed === true).length;
+  const percentagePacked = Math.round((packedItems / numberOfItems) * 100);
+
   return (
     <footer className="stats">
-      <em>You have X items on your list, and you already packed X (X%)</em>
+      <em>
+        You have {numberOfItems} items on your list, and you already packed{" "}
+        {packedItems} ({percentagePacked ? percentagePacked : 0} %)
+      </em>
     </footer>
   );
 }
